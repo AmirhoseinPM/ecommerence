@@ -1,0 +1,112 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}اطلاعات کاربری{% endblock %}
+
+{% block content %}
+<style type="text/css">
+
+
+body{
+	margin: 0;
+	padding: 0;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	font-family: 'Jost', sans-serif;
+}
+.main{
+	width: 350px;
+	height: 500px;
+	background: red;
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+#chk{
+	display: none;
+}
+.form{
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+label{
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+input{
+	width: 60%;
+	height: 40px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+button{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #573b8a;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+button:hover{
+	background: #6d44b8;
+}
+
+
+
+</style>
+    <label><h1 class="is-size-3">تغییر اطلاعات کاربری</h1></label>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+
+        <div class="box">
+            <label>نام تجاری</label>
+                <input type="text" name="name" id="id_name" value="{{ vendor.name }}" class="input">
+        </div>
+
+        <div class="box">
+            <label>آدرس</label>
+             <input type="text" name="address" value="{{ vendor.full_add }}" class="input">
+        </div>
+
+        <div class="box">
+            <label>شماره تماس </label>
+                <input type="number" name="phone" value="{{ vendor.user.phone }}" class="input">
+        </div>
+
+        <div class="box">
+            <label>نام مدیر فروش</label>
+             <input type="text" name="manager_name" value="{{ vendor.manager_name }}" class="input">
+        </div>
+
+        <div class="box">
+            <label>شماره تماس مدیر فروش</label>
+             <input type="number" name="manager_phone" value="{{ vendor.manager_phone}}" class="input">
+        </div>
+
+
+        <label><button class="button is-dark is-uppercase">ذخیره اطلاعات</button></label>
+
+    </form>
+{% endblock %}

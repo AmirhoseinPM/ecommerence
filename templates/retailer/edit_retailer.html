@@ -1,0 +1,62 @@
+{% extends 'retailer/base.html' %}
+
+{% block title %}اطلاعات کاربری{% endblock %}
+
+{% block content %}
+    <h1 class="title">تغییر اطلاعات کاربری</h1>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+        <div class="field">
+            <label>نام کاربری</label>
+            <div class="control">
+                <input type="text" name="username" value="{{ retailer.user.username }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>نام</label>
+            <div class="control">
+                <input type="text" name="name" id="id_name" value="{{ retailer.name }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>ایمیل</label>
+
+            <div class="control">
+                <input type="email" name="email" id="id_email" value="{{ retailer.user.email }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>شماره تماس اصلی</label>
+
+            <div class="control">
+                <input type="number" name="phone" value="{{ retailer.phone }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>نام مسئول خرید</label>
+
+            <div class="control">
+                <input type="text" name="manager_name" value="{{ retailer.manager_name }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>شماره تماس مسئول خرید</label>
+
+            <div class="control">
+                <input type="number" name="manager_phone" value="{{ retailer.manager_phone}}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <button type='submit' class="button is-dark is-uppercase">ذخیره اطلاعات</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

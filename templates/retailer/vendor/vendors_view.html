@@ -1,0 +1,21 @@
+{% extends 'retailer/base.html' %}
+
+{% block title %} نمایندگان {% endblock title %}
+
+{% block content %}
+    <div class="columns is-multiline mb-6">
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-3">نماینده های توزیع</h2>
+        </div>
+
+        {% if vendors %}
+            {% for vendor in vendors %}
+                {% include 'retailer/vendor/parts/vendor_list_item.html' %}
+            {% endfor %}
+
+        {% else %}
+            <p class="has-text-danger"> نماینده ای ثبت نشده است </p>
+        {% endif %}
+
+    </div>
+{% endblock content %}

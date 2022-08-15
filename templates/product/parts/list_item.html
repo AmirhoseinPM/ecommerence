@@ -1,0 +1,14 @@
+<div class="column is-3 product-list-item">
+                <div class="box">
+                    <figure class="image is-4by3 mb-4">
+                        <img src="{{ product.get_thumbnail }}" alt="{{product.title}}">
+                    </figure>
+                    <div class="subtitle"></div>
+                    <h2 class="subtitle">{{product.title}}</h2>
+
+
+                    <hr>
+
+                    <a href="{% url 'product' product.brand.slug product.slug %}" class="button is-dark is-uppercase">مشاهده</a>
+                </div>
+            </div>

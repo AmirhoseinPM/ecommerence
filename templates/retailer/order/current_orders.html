@@ -1,0 +1,22 @@
+{% extends 'retailer/base.html' %}
+
+{% load mathfilters %}
+
+{% block title %}سفارشات{% endblock title %}
+
+{% block content %}
+<div class="box">
+    <div>
+    <h2 class="tag is-dark is-size-4"><a href="{% url 'retailer_final_orders'%}">سفارشات نهایی</a></h2>
+    </div>
+        <h2 class="is-size-4 mb-4">سفارشات اخیر</h2>
+
+        {% if orders %}
+            {% for order in orders %}
+                {% include 'retailer\order\parts\order_list_item.html' %}
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+{% endblock content %}

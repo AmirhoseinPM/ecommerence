@@ -1,0 +1,14 @@
+{% extends 'retailer/base.html' %}
+
+{% block title %}{{vendor.name}}{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">{{ vendor.name }}</h1>
+
+
+    {% include 'retailer\vendor\parts\vendor_info.html' %}
+
+    {% include 'retailer\vendor\parts\settlement.html' %}
+
+{% endblock content %}

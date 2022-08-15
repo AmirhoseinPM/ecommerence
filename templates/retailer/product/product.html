@@ -1,0 +1,116 @@
+{% extends 'retailer/base.html' %}
+
+{% block title %}{{ product.product.title}}{% endblock title %}
+
+{% load jformat %}
+
+{% block content %}
+    <h1 class="title">{{product.product.title}}</h1>
+
+    {% if product.product.image %}
+        <figure class="image is-4by3 mb-6">
+            <img src="{{product.product.image.url}}" alt="{{product.product.title}}">
+        </figure>
+    {% endif %}
+
+    <p class="mb-6">
+        <span class="tag is-dark">{{ product.brand }}</span>
+        <span class="tag is-dark">{{ product.category }}</span>
+        <span class="tag is-dark">{{ product.subcategory }}</span>
+    </p>
+    <box>
+    <span class="tag is-blue">
+        <span> تومان </span>
+        <span>{{ product.manufacturer_price }} : </span>
+        <span> قیمت تولید کننده </span>
+    </span>
+    <span class="tag is-blue">
+        <span> تومان </span>
+        <span>{{ product.price }} : </span>
+        <span> قیمت فروش  </span>
+    </span>
+    <span class="tag is-blue">
+        <span> تومان </span>
+        <span>{{ product.consumer_price }} : </span>
+        <span>قیمت مصرف کننده </span>
+    </span>
+    <p>
+        {% if product.product.kg_retail_unit %}
+        <span>مقدار کیلو در کارتن/پاکت : </span>
+        {% elif product.product.packet_retail_unit %}
+        <span>تعداد بسته در کارتن : </span>
+        {% endif %}
+        <span>{{ product.total_number }}</span>
+    </p>
+    <p>
+        <span>وزن واحد کالا</span>
+        <span>{{ product.weight }}</span>
+        <span>گرم</span>
+    </p>
+    <p>
+        <span>تاریخ انقضا</span>
+        <span class="tag">{{ product.expire_date|jformat:"%d %B %Y" }}</span>
+
+    </p>
+
+    {% if product.exist %}
+    <p>
+    <span class="tag is-dark"> موجود </span>
+    </p>
+    {% else %}
+    <p>
+    <span class="tag is-dark"> ناموجود </span>
+    </p>
+    {% endif %}
+    </box>
+
+    {% if product.discount %}
+        <br><br>
+        <h1>تخفیفات کالا : </h1>
+        {% for discount in product.discount.all %}
+            <box>
+                <p>
+                    <span><span class="tag">{{ discount.expire|jformat:"%d %B %Y" }}</span> تا تاریخ  </span>
+                </p>
+                <p> تخفیف پله اول </p>
+                <p>
+                    <span class="tag is-dark">% {{ discount.step_one_percent }} </span>
+                    <span> بیشتر از <span class="tag is-dark">{{ discount.step_one_number }}</span> کارتن/پاکت </span>
+                </p>
+                <p> تخفیف پله دوم </p>
+                <p>
+                    <span class="tag is-dark">% {{ discount.step_two_percent }} </span>
+                    <span> بیشتر از <span class="tag is-dark">{{ discount.step_two_number }}</span> کارتن/پاکت </span>
+                </p>
+
+            </box>
+        {% endfor %}
+
+    {% endif %}
+
+    <p>{{product.product.description}}</p>
+
+    <hr>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notificatin is-seccess is-toast">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+
+    <form method="post" action="{% url 'product' product.slug %}">
+        {% csrf_token %}
+
+        <div class="field has-addons">
+            <div class="control">
+                <input type="number" name="quantity" value="1" class="input" min="1" id="">
+            </div>
+
+            <div class="control">
+                <button type="submit" class="button is-dark is-uppercase">افزودن به سبد</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock content %}

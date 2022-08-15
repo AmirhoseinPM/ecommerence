@@ -1,0 +1,149 @@
+{% extends 'retailer/base.html' %}
+
+{% load mathfilters %}
+
+{% block title %}سبد خرید {% endblock title %}
+
+{% block content %}
+
+
+    {% if cart %}
+        {% for vendor in cart %}
+        <h3 class="is-size-4">{{ vendor.vendor.name }}</h3>
+        <a href="?remove_vendor={{ vendor.vendor.slug }}" class="tag is-dark">حذف سبد خرید </a>
+
+            <div class="box mb-6">
+                <div class="table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>کالا</th>
+                                <th>تعداد</th>
+                                <th>مبلغ</th>
+                                <th>تخفیف</th>
+                                <th>مبلغ نهایی</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in vendor.products.values %}
+
+                                <tr>
+                                    <td>
+                                        <figure class="image is-64x64">
+                                            <img src="{{ item.product.product.get_thumbnail }}" alt="{{item.product.product.title}}">
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'product' item.product.slug %}">{{item.product.product.title}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="?change_quantity={{ item.product.slug }}&vendor={{ vendor.vendor.slug }}&quantity=-1">-</a>
+                                        {{item.quantity}}
+                                        <a href="?change_quantity={{ item.product.slug }}&vendor={{ vendor.vendor.slug }}&quantity=1">+</a>
+
+                                    </td>
+
+                                    <td>ت{{ item.total_price }}</td>
+                                    <td>ت{{ item.discount }}</td>
+                                    <td>ت{{ item.total_price | sub:item.discount }}</td>
+                                    <td>
+                                        <a href="?remove_product={{item.product.slug}}&vendor_product={{ vendor.vendor.slug }}" class="delete">حذف</a>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td><strong>کل</strong> </td>
+                                <td><strong>{{ vendor.total_number }}</strong> </td>
+                                <td>ت{{vendor.total_cost}}</td>
+                                <td>ت{{vendor.total_discount}}</td>
+                                <td>ت{{vendor.total_cost | sub:vendor.total_discount}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="subtitle">
+                    <box>
+                    <span class="tag is-size-6"> شرایط تسویه فروشنده</span>
+                    <br>
+                    <span class="is-size-6">پرداخت هنگام تحویل سفارش</span>
+                        {% if vendor.vendor.settlement.cash_discount_percent %}
+                            <span class="is-size-7">با {{ vendor.vendor.settlement.cash_discount_percent }}% تخفیف </span>
+                        {% endif %}
+                    <br>
+                    {% if vendor.vendor.settlement.draft %}
+                    <span class="is-size-6">پرداخت چک </span>
+                        {% if vendor.vendor.settlement.draft_days %}
+                            <span class="is-size-7">مهلت تسویه {{ vendor.vendor.settlement.draft_days }} روز </span>
+                        {% endif %}
+                    {% endif %}
+                    <br>
+                    {% if vendor.vendor.settlement.trust %}
+                    <span class="is-size-6"> اعتباری </span>
+                        {% if vendor.vendor.settlement.trust_days %}
+                            <span class="is-size-7">مهلت تسویه {{ vendor.vendor.settlement.trust_days }} روز </span>
+                        {% endif %}
+                    {% endif %}
+                    </box>
+                </div>
+            <a href="{% url 'vendor_cart' vendor.vendor.slug %}" class="tag is-size-4 is-dark"> مشاهده </a>
+            </div>
+
+        {% endfor %}
+
+        <a href="?save_orders=1" class="tag is-size-4 is-dark"> ثبت سفارشات </a>
+
+    {% else %}
+
+    <p>هنوز کالایی به سبد خرید اضافه نکرده اید!</p>
+
+    {% endif %}
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('{{ stripe_pub_key }}');
+        var elements = stripe.elements();
+
+        var card = elements.create('card');
+
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        function stripeTokenHandler(token) {
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripe_token');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            form.submit();
+        }
+    </script>
+
+{% endblock scripts %}

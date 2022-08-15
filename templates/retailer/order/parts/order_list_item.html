@@ -1,0 +1,78 @@
+{% load mathfilters %}
+{% load jformat %}
+
+<div class="{% if order.buyer_confirmation %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <span class="is-size-6">{{ order.created_at|jformat:"%d %B %Y" }}</span><br>
+                            <h3 class="is-size-4">#{{ order.id }} - <a href="{% url 'retailer_vendor' order.seller.slug %}">{{ order.seller.name }}</a>
+                                {% if order.seller_confirmation %}
+                                    {% if not order.buyer_confirmation %}
+                                    <span class="tag">سفارش در صف ارسال قرار گرفته است.</span><br>
+                                    <a class="tag is-dark" href="?order_confirmation={{ order.id }}">تایید دریافت سفارش </a>
+                                    {% endif %}
+                                {% else %}
+                                <span class="tag"> در انتظار تایید سفارش از طرف فروشنده</span>
+                                {% endif %}
+                            </h3>
+
+
+                        </div>
+
+                        <table class="table full-width">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>کالا</th>
+                                    <th>تعداد</th>
+                                    <th>مبلغ</th>
+                                    <th>تخفیف</th>
+                                    <th>مبلغ نهایی</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in order.order_items.all %}
+
+                                    <tr>
+                                        <td>
+                                            <figure class="image is-64x64">
+                                                <img src="{{ item.product.product.get_thumbnail }}" alt="{{item.product.product.title}}">
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'vendor_product' item.product.slug %}">{{item.product.product.title}}</a>
+                                        </td>
+                                        <td>
+                                            {{item.quantity}}
+                                        </td>
+
+                                        <td>ت{{ item.price|mul:item.product.total_number }}</td>
+                                        <td>%{{ item.discount_percent }}</td>
+                                        <td>{{ 100|sub:item.discount_percent|div:100|mul:item.price|mul:item.product.total_number|mul:item.quantity}}</td>
+
+                                    </tr>
+
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td><strong>کل</strong> </td>
+                                    <td><strong>{{ order.total_number }}</strong> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ order.paid_amount}}</td>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                        {% if not order.seller_confirmation %}
+                            {% if order.cash_settlement %}<span class="subtitle tag is-size-6">پرداخت هنگام تحویل</span>{% endif%}
+                            {% if order.draft_settlement %}<span class="subtitle tag is-size-6">پرداخت چک</span>{% endif%}
+                            {% if order.trust_settlement %}<span class="subtitle tag is-size-6">پرداخت اعتباری</span>{% endif%}
+                        {% endif %}
+                    </div>
+</div>

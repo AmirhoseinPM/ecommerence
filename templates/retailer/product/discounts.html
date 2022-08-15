@@ -1,0 +1,30 @@
+{% extends 'retailer/base.html' %}
+
+{% block title %} تخفیفات {% endblock title %}
+
+{% block content %}
+    <div class="columns is-multiline mb-6">
+
+        {% if categories %}
+
+        <div class="box">
+            {% for category in categories %}
+                {% include 'retailer\product\parts\category_list_item.html' %}
+            {% endfor %}
+        </div>
+
+        {% endif %}
+
+        {% if products %}
+            {% for product in products %}
+                {% include 'retailer/product/parts/product_list_item.html' %}
+            {% endfor %}
+
+        {% else %}
+            <p class="has-text-danger"> کالایی شامل تخفیف ثبت نشده است </p>
+        {% endif %}
+
+    </div>
+
+    </div>
+{% endblock content %}

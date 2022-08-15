@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+
+{% load static %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %} سامانه توزیع کالا {% endblock title %} </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+</head>
+<body>
+
+    <div class="container">
+        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{% url 'retailer' %}">
+                <img src="media/defaults/logo/brand1.jpg" width="112" >
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                <a class="navbar-item" href="{% url 'retailer' %}">
+                    صفحه اصلی
+                </a>
+
+
+                </div> <!-- navbar start -->
+
+                <div class="navbar-end">
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link"><a href="{% url 'retailer_carts'%}">
+                            سبدخرید {% if cart %} ({{ cart|length }}) {% endif %}
+                        </a></span>
+                    </div>
+
+
+                    <div class="navbar-item">
+                        <a class="button is-dark" href="{% url 'retailer_vendors' %}">
+                            نمایندگان
+                        </a>
+                    </div>
+
+                    <div  class="navbar-item">
+                        <a class="button is-dark" href="{% url 'products' %}">
+                            کالا
+                        </a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="button is-dark" href="{% url 'retailer_discounts' %}">
+                            تخفیفات
+                        </a>
+                    </div>
+
+                    <div class="navbar-item">
+                        <a class="navbar-link" href="{% url 'retailer_current_orders' %}"> سفارشات </a>
+                    </div>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link is-capitalized">
+                        {{ retailer.user.username }}
+                        </a>
+
+                        <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{% url 'retailer' %}">
+                            پروفایل
+                        </a>
+                        <a class="navbar-item" href="{% url 'edit_retailer' %}">
+                            تغییر اطلاعات کاربری
+                        </a>
+                        <a class="navbar-item" href="{% url 'password_change' %}">
+                            تغیر رمز عبور
+                        </a>
+                        <a class="navbar-item" href="{% url 'contactus' %}">
+                                <strong> ارتباط با ما</strong>
+                        </a>
+                        <a class="navbar-item" href="{% url 'logout' %}">
+                            خروج
+                        </a>
+
+                        </div>
+                    </div>
+                </div> <!--navbarend -->
+                </div> <! --nav basic exam -->
+            </nav>
+    </div>
+
+    <section class="section">
+        <div class="container">
+
+            {% block content %}{% endblock content %}
+
+        </div>
+    </section>
+
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+{% extends 'vendor/base.html' %}
+
+{% load mathfilters %}
+
+{% block title %}سبد فروش {% endblock title %}
+
+{% block content %}
+
+
+    {% if vendor_cart %}
+            <a class="tag is-dark is-size-4" href="?clear=1">حدف سبد</a>
+            <div class="box mb-6">
+                <div class="table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>کالا</th>
+                                <th>تعداد</th>
+                                <th>درصد تخفیف</th>
+                                <th>مبلغ نهایی</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in vendor_cart %}
+                                <tr>
+                                    <td>
+                                        <figure class="image is-64x64">
+                                            <img src="{{ item.product.product.get_thumbnail }}" alt="{{item.product.product.title}}">
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'vendor_product' item.product.slug %}">{{item.product.product.title}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="?change_quantity={{ item.product.slug }}&quantity=-1">-</a>
+                                        {{item.quantity}}
+                                        <a href="?change_quantity={{ item.product.slug }}&quantity=1">+</a>
+
+                                    </td>
+
+                                    <td>
+                                        <a href="?change_discount={{ item.product.slug }}&discount=-1">-</a>
+                                        {{item.discount}}
+                                        <a href="?change_discount={{ item.product.slug }}&discount=1">+</a>
+
+                                    </td>
+
+                                    <td>ت{{ item.final_price }}</td>
+
+                                    <td>
+                                        <a href="?remove_product={{item.product.slug}}" class="delete">حذف</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td><strong>کل</strong> </td>
+                                <td><strong>{{ vendor_cart.get_total_number }}</strong> </td>
+                                <td>ت{{vendor_cart.get_total_discount}}</td>
+                                <td>ت{{vendor_cart.get_total_cost | sub:vendor_cart.get_total_discount}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="subtitle">
+
+                </div>
+            </div>
+
+    {% else %}
+<div class="box">
+    <p>هنوز کالایی به سبد فروش اضافه نکرده اید!</p>
+</div>
+    {% endif %}
+
+    {% if retailer %}
+    <div class="box">
+        <h2 class="is-size-3"> مشتری </h2>
+        <br>
+        <a class="tag is-size-4 is-primary" href="{% url 'retailer_view' retailer.slug %}">{{ retailer.name }}</a>
+        <p class="is-size-5">
+            <b>{{ retailer.user.username }}</b>
+            {{ retailer.user.phone }}<br>
+            {{ retailer.full_add }}
+        </p>
+        <br>
+        <div>
+            <a href="?remove_retailer=1" class="tag is-dark is-size-5"> حذف و تغییر مشتری </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="box">
+        <p>هنوز خریداری به سبد فروش اضافه نکرده اید!</p>
+        <a class="tag is-dark" href="{% url 'vendor_retailers' %}">افزودن خریدار</a>
+    </div>
+    {% endif %}
+
+    {% if retailer and vendor_cart %}
+    <div class="box">
+        <a class="tag is-size-4 is-dark" href="?save_order=1">ثبت سفارش</a>
+    </div>
+    {% endif %}
+{% endblock content %}
+
+
+{% block scripts %}
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('{{ stripe_pub_key }}');
+        var elements = stripe.elements();
+
+        var card = elements.create('card');
+
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        function stripeTokenHandler(token) {
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripe_token');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            form.submit();
+        }
+    </script>
+
+{% endblock scripts %}

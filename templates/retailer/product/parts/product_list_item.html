@@ -1,0 +1,48 @@
+{% load mathfilters %}
+
+
+<div class="column is-3 product-list-item">
+                <span>{{ product.vendor.name}}</span>
+                <div class="box">
+                        <a href="{% url 'product' product.slug %}">
+                            <figure class="image is-4by3 mb-4">
+                                <img src="{{ product.product.get_thumbnail }}" alt="{{ product.product.title }}">
+                            </figure>
+                        </a>
+
+                    <div class="subtitle">
+                        <box>
+                            <span>{{ product.total_number }} × </span>
+                            <span class="subtitle tag">مصرف: {{product.consumer_price}}</span>
+                            <span class="subtitle tag is-dark">توزیع: {{product.price}}</span>
+                            <span class="subtitle tag">تولید: {{product.manufacturer_price}}</span>
+                        </box>
+                        {% if product.discount.get %}
+                            <span class="tag subtitle">
+                                <span class="is-size-6"> <b>{{ product.price|mul:product.discount.get.step_one_percent|div:100|sub:product.price|abs }}</b> :</span>
+                                <span class="is-size-6"> بیشتر از "{{ product.discount.get.step_one_number }}" کارتن </span>
+                            </span>
+                            <span class="tag subtitle">
+                                <span class="is-size-6"> <b>{{ product.price|mul:product.discount.get.step_two_percent|div:100|sub:product.price|abs }}</b> :</span>
+                                <span class="is-size-6"> بیشتر از "{{ product.discount.get.step_two_number }}" کارتن </span>
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <form method="post" action="{% url 'product' product.slug %}">
+                            {% csrf_token %}
+
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input type="number" name="quantity" value="1" class="input" min="1" id="">
+                                </div>
+
+                                <div class="control">
+                                    <button type="submit" class="button is-dark is-uppercase">افزودن به سبد</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>

@@ -1,0 +1,32 @@
+<div class="columns is-multiline mb-6">
+
+            <div class="box">
+
+                <span class="tag is-size-6">شرایط تسویه سفارشات</span>
+                <br>
+                <span class="tag is-size-7 is-primary">پرداخت هنگام تحویل سفارش</span>
+
+            {% if settlement %}
+                {% if settlement.cash_discount_percent %}
+                    <span class="is-size-6">با {{ settlement.cash_discount_percent }}% تخفیف </span>
+                {% endif %}
+                <br>
+                {% if settlement.draft %}
+                    <span class="tag is-size-7 is-primary">پرداخت چک </span>
+                        {% if settlement.draft_days %}
+                            <span class="is-size-6">مهلت تسویه {{ settlement.draft_days }} روز </span>
+                        {% endif %}
+                {% endif %}
+                <br>
+                {% if settlement.trust %}
+                    <span class="tag is-size-7 is-primary"> اعتباری </span>
+                        {% if settlement.trust_days %}
+                            <span class="is-size-6">مهلت تسویه {{ settlement.trust_days }} روز </span>
+                        {% endif %}
+                {% endif %}
+                <br>
+                {% endif %}
+
+        </div>
+
+</div>

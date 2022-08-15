@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+{% load mathfilters %}
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <title>سامانه توزیع کالا AD</title>
+
+        <style type="text/css">
+            html {
+                width: 100%;
+            }
+
+            body {
+                width: 100%;
+                font-family: Arial;
+                font-size: 14px;
+                background-color: #fff;
+                color: #333;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td><h1>سفارش جدید</h1></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h3>اطلاعات خریدار</h3>
+
+                    <b> : نام </b> {{ order.buyer.name }}<br>
+                    <b> : شهر</b> {{ order.buyer.city }}<br>
+                    <b> : منطقه</b> {{ order.buyer.region }}<br>
+                    <b> : آدرس </b> {{ order.buyer.full_add }}<br>
+                    <b> : شماره تماس </b> {{ order.buyer.phone }}
+                    <b> :  مسئول خرید </b> {{ order.buyer.manager_name }}
+                    <b> : شماره تماس مسئول خرید </b> {{ order.buyer.manager_phone }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h3>لیست کالا</h3>
+
+                    <table class="table full-width">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>کالا</th>
+                                    <th>تعداد</th>
+                                    <th>مبلغ</th>
+                                    <th>تخفیف</th>
+                                    <th>مبلغ نهایی</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in order.order_items.all %}
+
+                                    <tr>
+                                        <td>
+                                            <figure class="image is-64x64">
+                                                <img src="{{ item.product.product.get_thumbnail }}" alt="{{item.product.product.title}}">
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'vendor_product' item.product.slug %}">{{item.product.product.title}}</a>
+                                        </td>
+                                        <td>
+                                            {{item.quantity}}
+                                        </td>
+
+                                        <td>ت{{ item.price|mul:item.product.total_number }}</td>
+                                        <td>%{{ item.discount_percent }}</td>
+                                        <td>{{ 100|sub:item.discount_percent|div:100|mul:item.price|mul:item.product.total_number|mul:item.quantity}}</td>
+
+                                    </tr>
+
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td><strong>کل</strong> </td>
+                                    <td><strong>{{ order.total_number }}</strong> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ order.paid_amount}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

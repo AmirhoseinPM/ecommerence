@@ -1,0 +1,13 @@
+<div class="column is-3 product-list-item">
+                <div class="box">
+                    <h1>{{ vendor.name }}</h1>
+                    <h2 class="subtitle">{{ vendor.phone }}</h2>
+                    <h3 class="is-size-6 mb-5">
+                        <span>{{ vendor.manager_name }}</span>
+                    </h3>
+                    <hr>
+
+                    <a href="{% url 'retailer_vendor' vendor.slug %}" class="button is-dark is-uppercase"> مشاهده </a>
+
+                </div>
+            </div>
