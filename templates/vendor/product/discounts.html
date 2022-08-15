@@ -1,0 +1,23 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}تخفیفات{% endblock title %}
+
+{% block content %}
+    <div class="columns is-multiline mb-6">
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-3">تخفیفات</h2>
+        </div>
+        {% if products %}
+            {% for product in products %}
+                {% include 'vendor/product/parts/vendor_product_list_item.html' %}
+            {% endfor %}
+            </div>
+
+        {% else %}
+            <p class="has-text-danger"> تخفیفی برای کالاهای شما ثبت نشده است. </p>
+        {% endif %}
+
+    </div>
+
+    </div>
+{% endblock content %}

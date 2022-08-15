@@ -1,0 +1,16 @@
+<div class="column is-3 product-list-item">
+                <div class="box">
+                    <figure class="image is-4by3 mb-4">
+                        <img src="{{ product.image.url }}" alt="{{product.title}}">
+                    </figure>
+
+                    <h2 class="subtitle">{{product.title}}</h2>
+
+
+                    <hr>
+
+                    <a href="{% url 'archives_product' product.slug %}" class="button is-dark is-uppercase">تاریخچه کالا</a>
+
+                    <a href="{% url 'add_product' product.slug %}" class="button is-dark is-uppercase">اضافه کردن</a>
+                </div>
+            </div>

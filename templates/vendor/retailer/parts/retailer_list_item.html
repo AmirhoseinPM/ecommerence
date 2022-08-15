@@ -1,0 +1,17 @@
+<div class="column is-3 product-list-item">
+                <div class="box">
+                    <h1>{{ retailer.name }}</h1>
+                    <h2 class="subtitle">{{ retailer.phone }}</h2>
+                    <h3 class="is-size-6 mb-5">
+                        <span>{{ retailer.full_add }}</span>
+                    </h3>
+                    <hr>
+
+                    <a href="{% url 'retailer_view' retailer.slug %}" class="button is-dark is-uppercase"> مشاهده </a>
+                    <div>
+                        <br>
+                        <a class="tag is-dark is-size-6" href="?add_to_cart=1&retailer={{ retailer.slug }}"> افزودن به سبد فروش </a>
+                    </div>
+
+                </div>
+            </div>

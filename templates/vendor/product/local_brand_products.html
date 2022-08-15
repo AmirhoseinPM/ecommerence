@@ -1,0 +1,31 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}افزودن کالا {% endblock title %}
+
+{% block content %}
+    <div>
+        <div class="box has-background-info-light">
+            {% for vendor_brand in brands %}
+            <div class="column is-12 has-test-centered mt-6 mb-6">
+                <a href="{% url 'local_brands' brand.slug %}" class="tag is-dark is-size-4">{{ vendor_brand.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if products %}
+            <div class="box has-background-info-light">
+                <div class="column is-12 has-test-centered mt-6 mb-6">
+                    <h3 class="is-size-3">{{ brand.title }}</h3>
+                </div>
+                {% for product in products %}
+                    {% include 'vendor/product/parts/main_list_item.html' %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="has-text-danger"> کالایی برای برندهای شما ثبت نشده است </p>
+        {% endif %}
+
+    </div>
+
+    </div>
+{% endblock content %}

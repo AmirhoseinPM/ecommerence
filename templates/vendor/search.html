@@ -1,0 +1,47 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}{{query}}نتایج جستجو برای : {% endblock title %}
+
+{% block content %}
+
+    <div class="box">
+        <a href="?local_products=1&query={{query}}" class="tag is-dark">کالای پایه</a>
+        <a href="?vendor_products=1&query={{query}}" class="tag is-dark">کالای اختصاصی </a>
+        <a href="?retailers_results=1&query={{query}}" class="tag is-dark">مشتریان </a>
+
+    </div>
+    {% if products %}
+    <div class="box">
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-4">کالا<span class="tag is-primary">{{query}}</span></h2>
+        </div>
+
+        {% for product in products %}
+            {% include 'vendor/product/parts/vendor_product_list_item.html' %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if retailers %}
+    <div class="box">
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-4 ">مشتریان <span class="tag is-primary">{{query}}</span></h2>
+        </div>
+
+        {% for retailer in retailers %}
+            {% include 'vendor/retailer/parts/retailer_list_item.html' %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if original_products %}
+    <div class="box">
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-4">کالای پایه<span class="tag is-primary">{{query}}</span></h2>
+        </div>
+
+        {% for product in original_products %}
+            {% include 'vendor/product/parts/main_list_item.html' %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% endblock content %}

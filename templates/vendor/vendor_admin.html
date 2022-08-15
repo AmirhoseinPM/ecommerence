@@ -1,0 +1,18 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}{{ vendor.name }}{% endblock title %}
+
+{% block content %}
+
+
+    <div class="box">
+    {% include 'vendor\vendor_info.html' %}
+    <a class="tag is-dark is-size-4" href="{% url 'edit_vendor' %}">تغییر اطلاعات کاربری</a>
+    </div>
+
+
+    <div class="box">
+    {% include 'vendor\settlement.html' %}
+    <a class="tag is-dark is-size-4" href="{% url 'settlement' %}">تغییر شرایط تسویه</a>
+    </div>
+{% endblock content %}

@@ -1,0 +1,54 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}{{retailer.name}}{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">{{ retailer.name }}</h1>
+
+    <p class="mb-6">
+        <span class="tag is-dark">{{ retailer.city.name }}</span>
+        <span class="tag is-dark">{{ retailer.region.code }}</span>
+        <span class="tag is-dark">{{ retailer.region.name }}</span>
+    </p>
+    <div class="box">
+    <span class="tag is-blue">
+        <span>{{ retailer.post_code }} : </span>
+        <span> کد پستی </span>
+    </span>
+    <span class="tag is-blue">
+        <span>{{ retailer.full_add }} : </span>
+        <span> آدرس </span>
+    </span>
+    <span class="tag is-blue">
+        <span>{{ retailer.phone }} : </span>
+        <span> شماره تماس اصلی </span>
+    </span>
+    <p>
+        <span> نام مدیر فروشگاه: </span>
+        <span>{{ retailer.manager_name }} </span>
+    </p>
+    <p>
+        <span>{{ retailer.manager_phone }} :</span>
+        <span> شماره تماس مدیر فروشگاه </span>
+
+    </p>
+
+
+    </div>
+
+    <div>
+        <a class="tag is-dark is-size-4" href="?add_to_cart=1"> افزودن به سبد فروش </a>
+    </div>
+
+    <div class="box">
+        <div>
+            <h4 class="tag is-size-3">سفارشات</h4>
+        </div>
+        {% if orders %}
+            {% for order in orders%}
+                {% include 'vendor\order\parts\order_list_item.html' %}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock content %}

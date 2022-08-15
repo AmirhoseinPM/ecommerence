@@ -1,0 +1,111 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}افزودن کالای اختصاصی{% endblock title %}
+
+{% block content %}
+
+<style type="text/css">
+
+
+body{
+	margin: 0;
+	padding: 0;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	font-family: 'Jost', sans-serif;
+}
+.main{
+	width: 350px;
+	height: 500px;
+	background: red;
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+#chk{
+	display: none;
+}
+.form{
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+label{
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 60px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+input{
+	width: 60%;
+	height: 40px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 10px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+button{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #573b8a;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 20px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+button:hover{
+	background: #6d44b8;
+}
+
+
+
+</style>
+
+        <form method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+				<figure class="image is-4by3 mb-4">
+				<label><img src="{{ product.image.url }}" alt="{{product.title}}"></label>
+				</figure>
+				<input type="number" name="manufacturer_price" placeholder="قیمت تولید کننده(تومان)">
+				<input type="number" name="consumer_price" placeholder="قیمت مصرف کننده(تومان)">
+				<input type="number" name="weight" placeholder="وزن واحد خرد(گرم)">
+				<input type="number" name="total_number" placeholder="تعدادکالا در واحدعمده" required>
+				<input type="number" name="price" placeholder="قیمت توزیع واحدخرد(تومان)" required>
+				<label>
+				<input type="date" name="expire_date" placeholder="تاریخ انقضا"><span class="is-size-5"> تاریخ انقضا </span></label>
+
+				{% for field in registration_form %}
+				<p>
+				{% for error in field.errors %}
+				<p style="color: red">{{ error }}</p>
+				{% endfor %}
+				</p>
+				{% endfor %}
+				{% if registration_form.non_field_errors %}
+				<div style="color: red">
+					<p>{{registration_form.non_field_errors}}</p>
+				</div>
+
+				{% endif %}
+
+
+				<label><button class="button is-dark is-uppercase" type="submit">ثبت کالا</button></label>
+
+				</form>
+
+{% endblock content %}

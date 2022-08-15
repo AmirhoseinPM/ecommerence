@@ -1,0 +1,20 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}{{ sub_brand.title }}{% endblock title %}
+
+{% block content %}
+    <div class="columns is-multiline mb-6">
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-3">بایگانی ها</h2>
+        </div>
+
+        {% if products %}
+            {% for product in products %}
+                {% include 'vendor/product/parts/vendor_product_list_item.html' %}
+            {% endfor %}
+
+        {% else %}
+            <p class="has-text-danger"> کالایی برای {{ product.title }} بایگانی نشده است </p>
+        {% endif %}
+    </div>
+{% endblock content %}

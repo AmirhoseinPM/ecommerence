@@ -1,0 +1,47 @@
+{% load mathfilters %}
+
+<div class="column is-3 product-list-item">
+                <div class="box">
+                    <figure class="image is-4by3 mb-4">
+                        <img src="{{ product.product.image.url }}" alt="{{product.title}}">
+                    </figure>
+
+                    <h2 class="subtitle">{{product.product.title}}</h2>
+                    <h3 class="price is-size-6 mb-5">
+                        <span>{{product.price}} :</span>
+                        <span> قیمت </span>
+                    </h3>
+
+                        {% if product.discount.get %}
+                            <span class="tag subtitle">
+                                <span class="is-size-6"> <b>{{ product.price|mul:product.discount.get.step_one_percent|div:100|sub:product.price|abs }}</b> :</span>
+                                <span class="is-size-6"> بیشتر از "{{ product.discount.get.step_one_number }}" کارتن </span>
+                            </span>
+                            <span class="tag subtitle">
+                                <span class="is-size-6"> <b>{{ product.price|mul:product.discount.get.step_two_percent|div:100|sub:product.price|abs }}</b> :</span>
+                                <span class="is-size-6"> بیشتر از "{{ product.discount.get.step_two_number }}" کارتن </span>
+                            </span>
+                        {% endif %}
+
+                    <hr>
+                    {% if product.exist %}
+
+                    <form method="post" action="{% url 'vendor_product' product.slug %}">
+                        {% csrf_token %}
+
+                        <div class="field has-addons">
+                            <div class="control">
+                                <input type="number" name="quantity" value="1" class="input" min="1" id="">
+                            </div>
+
+                            <div class="control">
+                                <button type="submit" class="button is-dark is-uppercase">فروش</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <a href="{% url 'add_discount' product.slug %}" class="button is-dark is-uppercase">درج تخفیف</a>
+                    {% endif %}
+                    <a href="{% url 'vendor_product' product.slug %}" class="button is-dark is-uppercase">مشاهده</a>
+                </div>
+            </div>

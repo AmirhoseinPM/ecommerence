@@ -1,0 +1,41 @@
+    <div class="box">
+    <span class="is-size-5">
+        <span class="tag is-primary">{{ vendor.user.username }}</span>
+        <span> نام کاربری </span>
+    </span>
+<br>
+    <span class="is-size-5">
+        <span class="tag is-primary">{{ vendor.name }}  </span>
+        <span> نام تجاری </span>
+    </span>
+<br>
+    <span class="is-size-5">
+        <span class="tag is-primary">{{ vendor.user.email }}  </span>
+        <span> آدرس ایمیل </span>
+    </span>
+<br>
+    <span class="is-size-6">
+        <span class="tag is-primary">{{ vendor.full_add }}  </span>
+        <span> آدرس </span>
+    </span>
+<br>
+    <span class="is-size-5">
+        <span class="tag is-primary">{{ vendor.user.phone }} </span>
+        <span> شماره تماس </span>
+    </span>
+    <p>
+        <span class="tag is-primary">{{ vendor.manager_name }} </span>
+        <span> نام مدیر توزیع </span>
+    </p>
+    <p>
+        <span class="tag is-primary">{{ vendor.manager_phone }}</span>
+        <span> شماره تماس مدیر توزیع </span>
+    </p>
+
+    </div>
+    <div class="box">
+        <h2 class="is-size-5">برندها</h2>
+        {% for brand in vendor.brands.all %}
+        <span class="tag is-size-4 is-primary">{{ brand.title }}</span>
+        {% endfor %}
+    </div>

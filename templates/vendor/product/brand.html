@@ -1,0 +1,26 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}{{brand.title}}{% endblock title %}
+
+{% block content %}
+    <div>
+
+        <div class="box has-background-info-light">
+            {% for sub_brand in brand.subbrand.all %}
+            <a class="tag is-dark is-size-4" href="{% url 'vendor_sub_brand' sub_brand.slug %}">
+                {{ sub_brand.title }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="box has-background-info-light">
+                <div class="column is-12 has-test-centered mt-6 mb-6">
+                    <h3 class="is-size-3">{{ brand.title }}</h3>
+                </div>
+                {% for product in products %}
+                    {% include 'vendor/product/parts/vendor_product_list_item.html' %}
+                {% endfor %}
+        </div>
+
+    </div>
+{% endblock content %}

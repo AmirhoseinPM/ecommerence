@@ -1,0 +1,23 @@
+{% extends 'vendor/base.html' %}
+
+{% load mathfilters %}
+
+{% block title %}سفارشات{% endblock title %}
+
+{% block content %}
+<div class="box">
+    <div>
+    <h2 class="tag is-dark is-size-4"><a href="{% url 'vendor_final_orders'%}">سفارشات نهایی</a></h2>
+    <h2 class="tag is-dark is-size-4"><a href="{% url 'vendor_current_orders'%}">سفارشات اخیر </a></h2>
+    </div>
+        <h2 class="is-size-4 mb-4">سفارشات ارسالی</h2>
+
+        {% if orders %}
+            {% for order in orders %}
+                {% include 'vendor\order\parts\order_list_item.html' %}
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+{% endblock content %}

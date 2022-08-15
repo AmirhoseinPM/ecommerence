@@ -1,0 +1,30 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %}سبد کالا{% endblock title %}
+
+{% block content %}
+    <div>
+
+        <div class="box has-background-info-light">
+            {% for brand in brands %}
+            <div class="column is-12 has-test-centered mt-6 mb-6">
+                <a href="{% url 'vendor_brand' brand.slug %}" class="tag is-dark is-size-4">{{ brand.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-3">سبد کالا</h2>
+        </div>
+
+        <div class="box">
+        {% if products %}
+            {% for product in products %}
+                {% include 'vendor/product/parts/vendor_product_list_item.html' %}
+            {% endfor %}
+        {% else %}
+            <p class="has-text-danger"> کالایی برای برندهای شما ثبت نشده است </p>
+        {% endif %}
+        </div>
+    </div>
+{% endblock content %}

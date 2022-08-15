@@ -1,0 +1,39 @@
+{% extends 'vendor/base.html' %}
+
+{% block title %} مشتریان {% endblock title %}
+
+{% block content %}
+    <div>
+        <div class="column is-12 has-test-centered mt-6 mb-6">
+            <h2 class="is-size-3">مشتریان عمومی</h2>
+        </div>
+
+        {% if city_retailers %}
+            {% for city,regions in city_retailers.items %}
+
+            <div class="box has-background-info-light">
+                <div class="column is-12 has-test-centered mt-6 mb-6">
+                    <h3 class="tag is-dark">  شهر {{ city }}</h3>
+                </div>
+                {% for region, retailers in regions.items %}
+                    <div class="box">
+                        <h3 class="tag">
+                                 منطقه {{ region }}
+                            </h3>
+                        {% if retailers %}
+                            {% for retailer in retailers %}
+                                {% include 'vendor/retailer/parts/retailer_list_item.html' %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+            <p class="has-text-danger"> کالایی برای {{ brand.tilte }} ثبت نشده است </p>
+        {% endif %}
+
+    </div>
+{% endblock content %}

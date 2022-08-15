@@ -1,0 +1,90 @@
+{% extends 'vendor/base.html' %}
+
+{% load mathfilters %}
+{% load jformat %}
+
+
+{% block title %}فروش{% endblock title %}
+
+{% block content %}
+
+                        <div class="box">
+                            <span class="is-size-6">{{ order.created_at|jformat:"%d %B %Y" }}</span><br>
+                            <h3 class="is-size-7">شماره سفارش {{ order.id }}</h3>
+                            {% if not order.seller_confirmation %}<br>
+                            <a class="tag is-size-6 is-dark" href="?order_confirmation={{ order.id }}">تایید سفارش </a>
+                            {% elif not order.buyer_confirmation %}<br><span class="is-size-6"> سفارش در صف ارسال</span>{% endif %}
+                        </div>
+
+
+                        <table class="table full-width">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>کالا</th>
+                                    <th>تعداد</th>
+                                    <th>درصد تخفیف</th>
+                                    <th>مبلغ کل</th>
+                                    <th>مبلغ تخفیف</th>
+                                    <th>مبلغ نهایی</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in order.order_items.all %}
+
+                                    <tr>
+                                        <td>
+                                            <figure class="image is-64x64">
+                                                <img src="{{ item.product.product.get_thumbnail }}" alt="{{item.product.product.title}}">
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'vendor_product' item.product.slug %}">{{item.product.product.title}}</a>
+                                        </td>
+                                        <td>
+                                            {{item.quantity}}
+                                        </td>
+
+                                        <td>
+                                            {{item.discount_percent}}
+                                        </td>
+
+                                        <td>ت{{ item.get_total_cost }}</td>
+                                        <td>ت{{ item.get_total_discount }}</td>
+                                        <td>ت{{ item.get_total_cost|sub:item.get_total_discount }}</td>
+
+                                    </tr>
+
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td><strong>کل</strong> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>{{ order.get_total_cost }}</strong> </td>
+                                    <td><strong>{{ order.get_total_discount }}</strong> </td>
+                                    <td><strong>{{ order.paid_amount}}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        {% include 'vendor\retailer\parts\retailer_list_item.html' %}
+
+
+                        <div class="subtitle">
+                            <!--
+                            {% if order.cash_settlement %}
+                                <span class="tag is-size-6">پرداخت هنگام تحویل سفارش </span>
+                            {% elif order.draft_settlement %}
+                                <span class="tag is-size-6">پرداخت چک </span>
+                            {% elif order.trust_settlement %}
+                                <span class="tag is-size-6">اعتباری </span>
+                            {% endif %}
+                            -->
+                        </div>
+{% endblock content %}
