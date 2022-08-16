@@ -34,31 +34,44 @@ class SettlementAdmin(ModelAdmin):
 
 
 class VendorProductAdmin(ModelAdmin):
-    list_display = ('name', 'user', 'city', 'post_code')
-    search_fields = ('name',)
+    list_display = ('get_vendor_name', 'get_product_name', 'slug', 'date_added')
+    search_fields = ()
     readonly_fields = ()
 
-    filter_horizontal = ('cities', 'brands')
+    filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
 
     class Meta:
-        ordering = ['user__date_joined']
+        ordering = ['~date_added']
 
-
+    def get_vendor_name(self, object):
+        return object.vendor.name
+    def get_product_name(self, object):
+        return object.product.title
 
 class DiscountAdmin(ModelAdmin):
-    list_display = ('name', 'user', 'city', 'post_code')
-    search_fields = ('name',)
+    list_display = ('get_vendor_name', 'get_product_name', 'date_added', 'expire',
+                    'step_one_number', 'step_one_percent', 'step_two_number', 'step_two_percent')
+    search_fields = ()
     readonly_fields = ()
 
-    filter_horizontal = ('cities', 'brands')
+    filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
 
     class Meta:
-        ordering = ['user__date_joined']
+        ordering = ['~date_added']
 
+
+    def get_vendor_name(self, object):
+        return object.vendor.name
+    def get_product_name(self, object):
+        return object.product.product.name
+
+
+admin.site.register(models.Discount, DiscountAdmin)
+admin.site.register(models.VendorProduct, VendorProductAdmin)
 
 
 admin.site.register(models.VendorSettlement, SettlementAdmin)
